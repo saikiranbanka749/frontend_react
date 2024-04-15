@@ -1,0 +1,40 @@
+{
+  "empDetails": [
+    {
+      "id": "1",
+      "name": "vamsi",
+      "email": "vamsi@gmail.com",
+      "contact": "897132498"
+    },
+    {
+      "id": "2",
+      "name": "chinni",
+      "email": "chinni@gmail.com",
+      "contact": "2332523"
+    },
+    {
+      "id": "3",
+      "name": "omg",
+      "email": "omg@gamil.com",
+      "contact": "8977"
+    },
+    {
+      "id": "4",
+      "name": "gsda",
+      "email": "da@sjhs.com",
+      "contact": "324"
+    },
+    {
+      "id": "5",
+      "name": "gsda",
+      "email": "da@sjhs.com",
+      "contact": "324"
+    },
+    {
+      "id": "6",
+      "name": "sd",
+      "email": "sd@lh.com",
+      "contact": "99"
+    }
+  ]
+}
