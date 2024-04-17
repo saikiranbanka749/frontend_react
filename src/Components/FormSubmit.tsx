@@ -1,41 +1,52 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import DisplayTable from "./DisplayTable";
 
 const FormSubmit = () => {
     const [empData, setEmpData] = useState({
-        id: "", 
-        name: "", 
-        email: "", 
-        contact: ""
+        "id": 0, 
+        "name": "", 
+        "email": "", 
+        "contact_number": ""
     });
+    const [resData, setResData]=useState([]);
 
     const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEmpData({...empData, [name]: value});
+        if (name === "id" && !isNaN(Number(value))) {
+            setEmpData({...empData, [name]: Number(value)});
+        } else {
+            setEmpData({...empData, [name]: value});
+        }
     };
 
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(empData);
-        axios.post("http://localhost:3333/empDetails",empData).then(res=>{
+       const stringifiedData= JSON.stringify(empData);
+        console.log("::::",stringifiedData);
+        axios.post("http://192.168.2.115:8080/create",stringifiedData).then(res=>{
+            setResData(res.data)
+            // console.log(res.data);
             alert("Data added successfully");
+            setEmpData({ id: 0, name: "", email: "", contact_number: "" });
         }).catch(err=>console.log(err));
     };
 
     return (
-        <div>
-            <Typography variant="h5" align="center">Submit form</Typography>
+        <div style={{ fontFamily: "'Times New Roman', Times, serif", overflow: "hidden" }}>
+            <div style={{ width: "100%", padding: "7px", color: "white", fontSize: "25px", backgroundColor: "blue", textAlign: "center", fontWeight: "bold" }}>
+            Submit form
+            </div>
             <form onSubmit={submitHandler}>
-                <table align="center">
+                <table style={{ position: "relative", top: "10px" }} align="center">
                     <tbody>
                         <tr>
                             <td>
                                 <label htmlFor="id">Id</label>
                             </td>
                             <td>
-                                <TextField onChange={changeHandler} id="id" name="id" label="Id" variant="outlined" />
+                                <TextField type="number" value={empData.id} onChange={changeHandler} id="id" name="id" label="Id" variant="outlined" />
                             </td>
                         </tr>
                         <tr>
@@ -43,7 +54,7 @@ const FormSubmit = () => {
                                 <label htmlFor="name">Name</label>
                             </td>
                             <td>
-                                <TextField onChange={changeHandler} id="name" name="name" label="Name" variant="outlined" />
+                                <TextField onChange={changeHandler} value={empData.name} id="name" name="name" label="Name" variant="outlined" />
                             </td>
                         </tr>
                         <tr>
@@ -51,7 +62,7 @@ const FormSubmit = () => {
                                 <label htmlFor="email">Email</label>
                             </td>
                             <td>
-                                <TextField onChange={changeHandler} id="email" name="email" label="Email" variant="outlined" />
+                                <TextField onChange={changeHandler} value={empData.email} id="email" name="email" label="Email" variant="outlined" />
                             </td>
                         </tr>
                         <tr>
@@ -59,19 +70,19 @@ const FormSubmit = () => {
                                 <label htmlFor="contact">Contact</label>
                             </td>
                             <td>
-                                <TextField onChange={changeHandler} id="contact" name="contact" label="Contact" variant="outlined" />
+                                <TextField onChange={changeHandler} value={empData.contact_number} id="contact" name="contact_number" label="Contact" variant="outlined" />
                             </td>
                         </tr>
                         <tr>
                             <td colSpan={2} align="center">
-                                <Button type="submit" variant="contained">Submit</Button>
+                                <Button sx={{ height: "30px" }} type="submit" variant="contained">Submit</Button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </form>
-            <div style={{overflow:"scroll"}}>
-            <DisplayTable />
+            <div>
+                <DisplayTable resData={resData} />
             </div>
         </div>
     );
